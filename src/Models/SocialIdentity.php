@@ -141,12 +141,16 @@ class SocialIdentity extends Model
     {
         $this->access_token = $tokens['access_token'];
 
-        if ( isset( $tokens['refresh_token'] ) ) {
+        // array_key_exists() so an explicit null from the provider clears
+        // the stored value instead of preserving stale credentials.
+        if ( array_key_exists( 'refresh_token', $tokens ) ) {
             $this->refresh_token = $tokens['refresh_token'];
         }
 
-        if ( isset( $tokens['expires_in'] ) ) {
-            $this->token_expires_at = now()->addSeconds( $tokens['expires_in'] );
+        if ( array_key_exists( 'expires_in', $tokens ) ) {
+            $this->token_expires_at = null === $tokens['expires_in']
+                ? null
+                : now()->addSeconds( (int) $tokens['expires_in'] );
         }
 
         $this->save();

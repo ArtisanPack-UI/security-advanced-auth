@@ -112,6 +112,12 @@ class BiometricManager extends Component
             // attestation response that the browser just produced.
             $challenge = (string) ( $this->enrollmentOptions['challenge'] ?? '' );
 
+            if ( '' === $challenge ) {
+                session()->flash( 'error', 'Enrollment session expired. Please start again.' );
+
+                return;
+            }
+
             $this->biometricManager->completeEnrollment( $user, 'webauthn', $response, $challenge );
 
             session()->flash( 'success', 'Biometric enrolled successfully.' );
@@ -156,9 +162,13 @@ class BiometricManager extends Component
         try {
             // BiometricManager has no revoke() method — credentials are
             // owned by the user, so delete them directly through the
-            // relationship. Scoped to the current user so a forged id
-            // can't reach another account's credential.
-            $deleted = $user->webAuthnCredentials()->where( 'id', $biometricId )->delete();
+            // relationship. Scoped to the current user AND to platform
+            // (biometric) credentials so a forged id can't be used to
+            // remove a roaming security key through the biometric UI.
+            $deleted = $user->webAuthnCredentials()
+                ->where( 'id', $biometricId )
+                ->where( 'is_platform_credential', true )
+                ->delete();
 
             if ( 0 === $deleted ) {
                 session()->flash( 'error', 'Biometric not found.' );
