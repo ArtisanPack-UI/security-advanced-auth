@@ -7,6 +7,7 @@ namespace ArtisanPackUI\SecurityAdvancedAuth\Livewire;
 use ArtisanPackUI\SecurityAdvancedAuth\Authentication\Biometric\BiometricManager as BiometricService;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -157,31 +158,43 @@ class BiometricManager extends Component
             return;
         }
 
-        // Ensure user has another way to log in
-        $biometricCount    = $user->webAuthnCredentials()->where( 'is_platform_credential', true )->count();
-        $hasSecurityKey    = $user->webAuthnCredentials()->where( 'is_platform_credential', false )->count() > 0;
-        $hasPassword       = null !== $user->password;
-        $hasSocialAccounts = method_exists( $user, 'socialIdentities' ) && $user->socialIdentities()->count() > 0;
-
-        if ( 1 === $biometricCount && ! $hasSecurityKey && ! $hasPassword && ! $hasSocialAccounts ) {
-            session()->flash( 'error', 'You must have at least one way to sign in.' );
-            $this->deletingBiometricId = null;
-
-            return;
-        }
+        // Run the eligibility check + delete inside one transaction with
+        // SELECT ... FOR UPDATE so two concurrent requests can't both pass
+        // the "user has another sign-in method" check and remove the last
+        // remaining factor between them. Scoped to the authenticated user
+        // AND to is_platform_credential=true so a forged id can't reach a
+        // roaming security key through the biometric-only UI flow.
+        $hasSocialAccounts = method_exists( $user, 'socialIdentities' )
+            && $user->socialIdentities()->count() > 0;
+        $hasPassword       = filled( $user->password );
 
         try {
-            // BiometricManager has no revoke() method — credentials are
-            // owned by the user, so delete them directly through the
-            // relationship. Scoped to the current user AND to platform
-            // (biometric) credentials so a forged id can't be used to
-            // remove a roaming security key through the biometric UI.
-            $deleted = $user->webAuthnCredentials()
-                ->where( 'id', $biometricId )
-                ->where( 'is_platform_credential', true )
-                ->delete();
+            $result = DB::transaction( function () use ( $user, $biometricId, $hasPassword, $hasSocialAccounts ) {
+                $biometricCount = $user->webAuthnCredentials()
+                    ->where( 'is_platform_credential', true )
+                    ->lockForUpdate()
+                    ->count();
 
-            if ( 0 === $deleted ) {
+                $hasSecurityKey = $user->webAuthnCredentials()
+                    ->where( 'is_platform_credential', false )
+                    ->lockForUpdate()
+                    ->exists();
+
+                if ( 1 === $biometricCount && ! $hasSecurityKey && ! $hasPassword && ! $hasSocialAccounts ) {
+                    return 'last-factor';
+                }
+
+                $deleted = $user->webAuthnCredentials()
+                    ->where( 'id', $biometricId )
+                    ->where( 'is_platform_credential', true )
+                    ->delete();
+
+                return 0 === $deleted ? 'not-found' : 'deleted';
+            } );
+
+            if ( 'last-factor' === $result ) {
+                session()->flash( 'error', 'You must have at least one way to sign in.' );
+            } elseif ( 'not-found' === $result ) {
                 session()->flash( 'error', 'Biometric not found.' );
             } else {
                 session()->flash( 'success', 'Biometric has been removed.' );
