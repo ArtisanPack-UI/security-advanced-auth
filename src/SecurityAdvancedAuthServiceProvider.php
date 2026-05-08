@@ -4,14 +4,16 @@ declare( strict_types=1 );
 
 namespace ArtisanPackUI\SecurityAdvancedAuth;
 
+use ArtisanPackUI\SecurityAdvancedAuth\Authentication\Contracts\SuspiciousActivityDetectorInterface;
+use ArtisanPackUI\SecurityAdvancedAuth\Authentication\Detection\SuspiciousActivityService;
 use Illuminate\Support\ServiceProvider;
 
 /**
  * Security Advanced Auth service provider.
  *
- * Scaffold-only at this stage. Bindings, migrations, views, and Livewire
- * component registrations are added once the source files are extracted from
- * artisanpack-ui/security 1.x in a follow-up PR.
+ * Bootstraps WebAuthn / FIDO2, SSO, social login, biometric, device
+ * fingerprinting, and suspicious-activity-detection services for Laravel
+ * applications.
  *
  * @since 1.0.0
  */
@@ -19,13 +21,48 @@ class SecurityAdvancedAuthServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        $this->mergeConfigFrom(
+            __DIR__ . '/../config/artisanpack/security-advanced-auth.php',
+            'artisanpack.security-advanced-auth',
+        );
+
         $this->app->singleton( 'security-advanced-auth', function ( $app ) {
             return new SecurityAdvancedAuth();
         } );
+
+        // Suspicious activity detection is the only service with a stable
+        // interface today; the rest (Social, SSO, WebAuthn, Biometric, Device)
+        // are wired by consumers via concrete classes since they need
+        // app-specific configuration (callbacks, certs, RP IDs, etc.).
+        $this->app->singleton( SuspiciousActivityService::class );
+        $this->app->bind( SuspiciousActivityDetectorInterface::class, SuspiciousActivityService::class );
     }
 
     public function boot(): void
     {
-        // Bootstrapping arrives with the content-extraction PR.
+        $this->publishes(
+            [
+                __DIR__ . '/../config/artisanpack/security-advanced-auth.php' => config_path( 'artisanpack/security-advanced-auth.php' ),
+            ],
+            'security-advanced-auth-config',
+        );
+
+        $this->loadMigrationsFrom( __DIR__ . '/../database/migrations/authentication' );
+        $this->loadViewsFrom( __DIR__ . '/../resources/views', 'security-advanced-auth' );
+
+        $this->registerLivewireComponents();
+    }
+
+    protected function registerLivewireComponents(): void
+    {
+        if ( ! class_exists( \Livewire\Livewire::class ) || ! $this->app->bound( 'livewire' ) ) {
+            return;
+        }
+
+        \Livewire\Livewire::component( 'webauthn-credentials-manager', Livewire\WebAuthnCredentialsManager::class );
+        \Livewire\Livewire::component( 'biometric-manager', Livewire\BiometricManager::class );
+        \Livewire\Livewire::component( 'device-manager', Livewire\DeviceManager::class );
+        \Livewire\Livewire::component( 'social-accounts-manager', Livewire\SocialAccountsManager::class );
+        \Livewire\Livewire::component( 'suspicious-activity-list', Livewire\SuspiciousActivityList::class );
     }
 }
