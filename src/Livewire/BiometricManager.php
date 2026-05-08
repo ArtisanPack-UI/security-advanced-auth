@@ -93,7 +93,8 @@ class BiometricManager extends Component
             $this->enrollmentOptions = $options;
             $this->dispatch( 'biometric-enrollment-start', options: $options );
         } catch ( Exception $e ) {
-            session()->flash( 'error', 'Failed to start enrollment: ' . $e->getMessage() );
+            report( $e );
+            session()->flash( 'error', 'Failed to start enrollment. Please try again.' );
         }
     }
 
@@ -124,7 +125,8 @@ class BiometricManager extends Component
             $this->closeEnrollModal();
             $this->loadBiometrics();
         } catch ( Exception $e ) {
-            session()->flash( 'error', 'Enrollment failed: ' . $e->getMessage() );
+            report( $e );
+            session()->flash( 'error', 'Enrollment failed. Please try again.' );
         }
     }
 
@@ -143,6 +145,15 @@ class BiometricManager extends Component
         $user = Auth::user();
 
         if ( ! $user ) {
+            return;
+        }
+
+        // Mirror loadBiometrics()'s relation guard so a user model that
+        // doesn't expose webAuthnCredentials() doesn't blow up here.
+        if ( ! method_exists( $user, 'webAuthnCredentials' ) ) {
+            session()->flash( 'error', 'Biometric credentials are not available for this account.' );
+            $this->deletingBiometricId = null;
+
             return;
         }
 
@@ -178,7 +189,8 @@ class BiometricManager extends Component
 
             $this->loadBiometrics();
         } catch ( Exception $e ) {
-            session()->flash( 'error', 'Failed to remove biometric: ' . $e->getMessage() );
+            report( $e );
+            session()->flash( 'error', 'Failed to remove biometric. Please try again.' );
         }
 
         $this->deletingBiometricId = null;
