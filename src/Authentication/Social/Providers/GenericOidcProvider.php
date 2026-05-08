@@ -69,10 +69,16 @@ class GenericOidcProvider extends AbstractOidcProvider
      */
     protected function mapUserData( array $data ): SocialUser
     {
-        $mapping = $this->config['attribute_mapping'] ?? [];
+        $mapping    = $this->config['attribute_mapping'] ?? [];
+        $idKey      = $mapping['id'] ?? 'sub';
+        $externalId = (string) ( $data[ $idKey ] ?? $data['sub'] ?? '' );
+
+        if ( '' === $externalId ) {
+            throw new RuntimeException( 'OIDC subject identifier is missing.' );
+        }
 
         return new SocialUser(
-            id: (string) ( $data[ $mapping['id'] ?? 'sub' ] ?? $data['sub'] ?? '' ),
+            id: $externalId,
             provider: $this->getName(),
             email: $data[ $mapping['email'] ?? 'email' ] ?? null,
             name: $data[ $mapping['name'] ?? 'name' ] ?? null,

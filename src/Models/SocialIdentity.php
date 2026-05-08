@@ -127,8 +127,9 @@ class SocialIdentity extends Model
             return false;
         }
 
-        // Refresh if token expires within 5 minutes
-        return $this->token_expires_at->subMinutes( 5 )->isPast();
+        // Refresh if token expires within 5 minutes. copy() avoids
+        // mutating the model's underlying Carbon instance.
+        return $this->token_expires_at->copy()->subMinutes( 5 )->isPast();
     }
 
     /**

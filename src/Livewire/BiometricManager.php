@@ -86,7 +86,7 @@ class BiometricManager extends Component
         }
 
         try {
-            $options = $this->biometricManager->enroll( $user, 'webauthn', [
+            $options = $this->biometricManager->startEnrollment( $user, [], [
                 'name' => $this->newBiometricName,
             ] );
 
@@ -107,10 +107,12 @@ class BiometricManager extends Component
         }
 
         try {
-            $this->biometricManager->verify( $user, 'webauthn', [
-                'type'     => 'registration',
-                'response' => $response,
-            ] );
+            // Challenge was issued during startEnrollment() and stashed on
+            // the component; pass it back so the manager can validate the
+            // attestation response that the browser just produced.
+            $challenge = (string) ( $this->enrollmentOptions['challenge'] ?? '' );
+
+            $this->biometricManager->completeEnrollment( $user, 'webauthn', $response, $challenge );
 
             session()->flash( 'success', 'Biometric enrolled successfully.' );
             $this->closeEnrollModal();
@@ -152,8 +154,18 @@ class BiometricManager extends Component
         }
 
         try {
-            $this->biometricManager->revoke( $user, 'webauthn', $biometricId );
-            session()->flash( 'success', 'Biometric has been removed.' );
+            // BiometricManager has no revoke() method — credentials are
+            // owned by the user, so delete them directly through the
+            // relationship. Scoped to the current user so a forged id
+            // can't reach another account's credential.
+            $deleted = $user->webAuthnCredentials()->where( 'id', $biometricId )->delete();
+
+            if ( 0 === $deleted ) {
+                session()->flash( 'error', 'Biometric not found.' );
+            } else {
+                session()->flash( 'success', 'Biometric has been removed.' );
+            }
+
             $this->loadBiometrics();
         } catch ( Exception $e ) {
             session()->flash( 'error', 'Failed to remove biometric: ' . $e->getMessage() );
@@ -164,6 +176,6 @@ class BiometricManager extends Component
 
     public function render()
     {
-        return view( 'security-advanced-auth::livewire.biometric-manager');
+        return view( 'security-advanced-auth::livewire.biometric-manager' );
     }
 }

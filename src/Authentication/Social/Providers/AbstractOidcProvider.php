@@ -40,30 +40,46 @@ abstract class AbstractOidcProvider extends AbstractOAuth2Provider
 
     /**
      * Check if ID token validation is supported.
+     *
+     * Returns false until full RFC-compliant verification (JWKS signature
+     * check, nonce binding, array-aware aud, exp/iat/auth_time, replay
+     * protection) is implemented. Callers must verify the ID token through
+     * a dedicated JWT library before trusting any claims; the partial
+     * helper below is intentionally not advertised as authoritative.
      */
     public function supportsIdTokenValidation(): bool
     {
-        return true;
+        return false;
     }
 
     /**
-     * Validate an ID token (basic validation - consider using a JWT library for production).
+     * Best-effort claim sanity-check.
+     *
+     * NOT a substitute for signature verification — this only short-circuits
+     * obviously-mismatched issuer / audience / expiration claims. The
+     * surrounding flow must verify the JWT signature against the provider's
+     * JWKS before calling this. `aud` may be a string or an array per
+     * RFC 7519 §4.1.3; both forms are accepted here.
      *
      * @param  array<string, mixed>  $claims
      */
     public function validateIdTokenClaims( array $claims ): bool
     {
-        // Check issuer
         if ( ( $claims['iss'] ?? null ) !== $this->getIssuerUrl() ) {
             return false;
         }
 
-        // Check audience
-        if ( ( $claims['aud'] ?? null ) !== $this->config['client_id'] ) {
+        $clientId = $this->config['client_id'] ?? null;
+        $aud      = $claims['aud'] ?? null;
+
+        if ( is_array( $aud ) ) {
+            if ( ! in_array( $clientId, $aud, true ) ) {
+                return false;
+            }
+        } elseif ( $aud !== $clientId ) {
             return false;
         }
 
-        // Check expiration
         if ( ( $claims['exp'] ?? 0 ) < time() ) {
             return false;
         }
