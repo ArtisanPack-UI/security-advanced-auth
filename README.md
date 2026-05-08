@@ -4,7 +4,16 @@ Enterprise authentication for Laravel: WebAuthn / FIDO2 passwordless auth, SSO (
 
 This package is part of the **ArtisanPack UI Security 2.0** split — the enterprise-auth features previously bundled inside `artisanpack-ui/security` (1.x) live here in 2.0+.
 
-> **Status:** scaffold. Content is being extracted from `artisanpack-ui/security` 1.x in a follow-up PR.
+> **Status:** initial extraction. Source files are migrated from `artisanpack-ui/security` 1.x. Comprehensive test coverage migration is a follow-up — see open issues.
+
+## Scope
+
+- WebAuthn / FIDO2 passwordless authentication
+- SSO providers (SAML, OIDC, LDAP)
+- Social login (OAuth)
+- Biometric authentication helpers
+- Device fingerprinting + suspicious activity detection
+- Livewire components: `WebAuthnCredentialsManager`, `BiometricManager`, `DeviceManager`, `SocialAccountsManager`, `SuspiciousActivityList`
 
 ## Installation
 
