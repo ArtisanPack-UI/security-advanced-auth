@@ -105,6 +105,7 @@ class WebAuthnController
 
         if ( ! empty( $result['user'] ) ) {
             Auth::login( $result['user'] );
+            unset( $result['user'] );
         }
 
         return response()->json( $result );

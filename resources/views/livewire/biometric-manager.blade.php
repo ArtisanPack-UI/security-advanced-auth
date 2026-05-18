@@ -45,7 +45,7 @@
                     <div>
                         @if ( $deleting )
                             <div class="flex gap-2">
-                                <button type="button" wire:click="deleteBiometric('{{ $biometric['id'] }}')" class="text-xs px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded font-medium">
+                                <button type="button" wire:click="deleteBiometric({{ json_encode($biometric['id']) }})" class="text-xs px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded font-medium">
                                     {{ __( 'Confirm delete' ) }}
                                 </button>
                                 <button type="button" wire:click="cancelDelete" class="text-xs px-3 py-1.5 bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 rounded font-medium">
@@ -53,7 +53,7 @@
                                 </button>
                             </div>
                         @else
-                            <button type="button" wire:click="confirmDelete('{{ $biometric['id'] }}')" class="text-sm text-red-600 hover:text-red-800 font-medium">
+                            <button type="button" wire:click="confirmDelete({{ json_encode($biometric['id']) }})" class="text-sm text-red-600 hover:text-red-800 font-medium">
                                 {{ __( 'Delete' ) }}
                             </button>
                         @endif

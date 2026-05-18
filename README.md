@@ -63,7 +63,7 @@ app( SocialAuthManager::class )->registerProvider( 'google', [
 ] );
 ```
 
-Users can now hit `/auth/social/google/redirect` to begin login. The callback at `/auth/social/google/callback` is wired automatically.
+With the default route prefix (`auth`), users can hit `/auth/social/google/redirect` to begin login. The callback at `/auth/social/google/callback` is wired automatically. The prefix is configurable via `artisanpack.security-advanced-auth.routes.prefix`; prefer the named routes (`security-advanced-auth.social.redirect`, `.callback`) when generating URLs.
 
 ### Wire up an SSO provider
 
@@ -79,7 +79,7 @@ SsoConfiguration::create([
 ]);
 ```
 
-Login URL: `/auth/sso/corp-saml/login`. SAML metadata at `/auth/sso/corp-saml/metadata`.
+With the default route prefix (`auth`), the login URL is `/auth/sso/corp-saml/login` and SAML metadata is at `/auth/sso/corp-saml/metadata`. Prefer the named routes (`security-advanced-auth.sso.login`, `.metadata`) when generating URLs — the prefix is configurable via `artisanpack.security-advanced-auth.routes.prefix`.
 
 ### WebAuthn registration
 

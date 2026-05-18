@@ -54,7 +54,15 @@ Route::middleware( $ssoMiddleware )
     } );
 
 // --- WebAuthn / FIDO2 ------------------------------------------------------
-$webauthnMiddleware = config( 'artisanpack.security-advanced-auth.routes.webauthn.middleware', ['api'] );
+//
+// `registerVerify` requires the authenticated user; `authenticateVerify`
+// calls `Auth::login()` which needs an active session to persist. Both are
+// state-changing POSTs, so they need CSRF protection. The default `web`
+// middleware group provides StartSession + VerifyCsrfToken; the bare `api`
+// group typically does not. Host apps overriding this config must include
+// session + CSRF middleware for the verify endpoints (the *_options
+// endpoints are read-only and safe under `api`).
+$webauthnMiddleware = config( 'artisanpack.security-advanced-auth.routes.webauthn.middleware', ['web'] );
 
 Route::middleware( $webauthnMiddleware )
     ->prefix( "{$prefix}/webauthn" )

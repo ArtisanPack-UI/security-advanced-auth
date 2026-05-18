@@ -640,7 +640,7 @@ class SuspiciousActivityService implements SuspiciousActivityDetectorInterface
             new DateTimeZone( $timezone );
 
             return true;
-        } catch ( Exception $e) {
+        } catch ( Exception $e ) {
             return false;
         }
     }

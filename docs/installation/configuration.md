@@ -72,8 +72,9 @@ Per-IdP config lives in the `sso_configurations` table — DB-driven so it can b
 
 ```php
 'device_fingerprint' => [
-    'enabled'      => true,
-    'trust_period' => 90,  // days a device stays trusted after a successful login
+    'enabled'                 => true,
+    'trust_period'            => 90,   // days a device stays trusted after a successful login
+    'auto_trust_after_logins' => null, // or integer N — auto-trust after N successful logins from the same fingerprint
 ],
 ```
 

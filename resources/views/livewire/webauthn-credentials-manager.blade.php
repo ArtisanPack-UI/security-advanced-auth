@@ -40,11 +40,11 @@
                     <div>
                         @if ( $deleting )
                             <div class="flex gap-2">
-                                <button type="button" wire:click="deleteCredential('{{ $credential['id'] }}')" class="text-xs px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded font-medium">{{ __( 'Confirm delete' ) }}</button>
+                                <button type="button" wire:click="deleteCredential({{ json_encode($credential['id']) }})" class="text-xs px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded font-medium">{{ __( 'Confirm delete' ) }}</button>
                                 <button type="button" wire:click="cancelDelete" class="text-xs px-3 py-1.5 bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 rounded font-medium">{{ __( 'Cancel' ) }}</button>
                             </div>
                         @else
-                            <button type="button" wire:click="confirmDelete('{{ $credential['id'] }}')" class="text-sm text-red-600 hover:text-red-800 font-medium">{{ __( 'Delete' ) }}</button>
+                            <button type="button" wire:click="confirmDelete({{ json_encode($credential['id']) }})" class="text-sm text-red-600 hover:text-red-800 font-medium">{{ __( 'Delete' ) }}</button>
                         @endif
                     </div>
                 </li>

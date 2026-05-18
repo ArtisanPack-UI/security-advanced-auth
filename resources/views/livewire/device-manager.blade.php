@@ -56,18 +56,18 @@
 
                         <div class="flex flex-col gap-2 items-end">
                             @if ( ! ( $device['trusted'] ?? false ) )
-                                <button type="button" wire:click="trustDevice('{{ $device['id'] }}')" class="text-sm text-blue-600 hover:text-blue-800 font-medium">
+                                <button type="button" wire:click="trustDevice({{ json_encode($device['id']) }})" class="text-sm text-blue-600 hover:text-blue-800 font-medium">
                                     {{ __( 'Trust this device' ) }}
                                 </button>
                             @endif
                             @if ( ! $isCurrent )
                                 @if ( $isRevoking )
                                     <div class="flex gap-2">
-                                        <button type="button" wire:click="revokeDevice('{{ $device['id'] }}')" class="text-xs px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded font-medium">{{ __( 'Confirm revoke' ) }}</button>
+                                        <button type="button" wire:click="revokeDevice({{ json_encode($device['id']) }})" class="text-xs px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded font-medium">{{ __( 'Confirm revoke' ) }}</button>
                                         <button type="button" wire:click="cancelRevoke" class="text-xs px-3 py-1.5 bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 rounded font-medium">{{ __( 'Cancel' ) }}</button>
                                     </div>
                                 @else
-                                    <button type="button" wire:click="confirmRevoke('{{ $device['id'] }}')" class="text-sm text-red-600 hover:text-red-800 font-medium">{{ __( 'Revoke' ) }}</button>
+                                    <button type="button" wire:click="confirmRevoke({{ json_encode($device['id']) }})" class="text-sm text-red-600 hover:text-red-800 font-medium">{{ __( 'Revoke' ) }}</button>
                                 @endif
                             @endif
                         </div>
