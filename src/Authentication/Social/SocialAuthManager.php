@@ -366,7 +366,7 @@ class SocialAuthManager
         // Assign default role if configured
         $defaultRole = config( 'artisanpack.security-advanced-auth.social.default_role' );
         if ( $defaultRole && method_exists( $user, 'assignRole' ) ) {
-            $user->assignRole( $defaultRole);
+            $user->assignRole( $defaultRole );
         }
 
         return $user;
