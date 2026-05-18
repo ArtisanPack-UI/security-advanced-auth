@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * SuspiciousActivityService suspicious activity detection service.
+ *
+ * @package    ArtisanPack_UI
+ * @subpackage SecurityAdvancedAuth
+ *
+ * @author     Jacob Martella <support@artisanpackui.dev>
+ *
+ * @since      1.0.0
+ */
+
 declare( strict_types=1 );
 
 namespace ArtisanPackUI\SecurityAdvancedAuth\Authentication\Detection;
@@ -605,14 +616,14 @@ class SuspiciousActivityService implements SuspiciousActivityDetectorInterface
         // Try to get timezone from user model
         if ( method_exists( $user, 'getAttribute' ) ) {
             $userTimezone = $user->getAttribute( 'timezone' );
-            if ( $userTimezone && $this->isValidTimezone( $userTimezone)) {
+            if ( $userTimezone && $this->isValidTimezone( $userTimezone ) ) {
                 return $userTimezone;
             }
         }
 
         // Fall back to application timezone if explicitly set
-        $appTimezone = config( 'app.timezone');
-        if ( $appTimezone && 'UTC' !== $appTimezone && $this->isValidTimezone( $appTimezone)) {
+        $appTimezone = config( 'app.timezone' );
+        if ( $appTimezone && 'UTC' !== $appTimezone && $this->isValidTimezone( $appTimezone ) ) {
             return $appTimezone;
         }
 
@@ -623,10 +634,10 @@ class SuspiciousActivityService implements SuspiciousActivityDetectorInterface
     /**
      * Check if a timezone string is valid.
      */
-    protected function isValidTimezone( string $timezone): bool
+    protected function isValidTimezone( string $timezone ): bool
     {
         try {
-            new DateTimeZone( $timezone);
+            new DateTimeZone( $timezone );
 
             return true;
         } catch ( Exception $e) {

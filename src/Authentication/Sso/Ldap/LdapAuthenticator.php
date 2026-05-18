@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * LdapAuthenticator LDAP SSO class.
+ *
+ * @package    ArtisanPack_UI
+ * @subpackage SecurityAdvancedAuth
+ *
+ * @author     Jacob Martella <support@artisanpackui.dev>
+ *
+ * @since      1.0.0
+ */
+
 declare( strict_types=1 );
 
 namespace ArtisanPackUI\SecurityAdvancedAuth\Authentication\Sso\Ldap;
@@ -364,10 +375,10 @@ class LdapAuthenticator implements SsoProviderInterface
 
         return sprintf(
             '%s-%s-%s-%s-%s',
-            substr( $hex, 6, 2 ) . substr( $hex, 4, 2 ) . substr( $hex, 2, 2 ) . substr( $hex, 0, 2),
-            substr( $hex, 10, 2) . substr( $hex, 8, 2),
-            substr( $hex, 14, 2) . substr( $hex, 12, 2),
-            substr( $hex, 16, 4),
+            substr( $hex, 6, 2 ) . substr( $hex, 4, 2 ) . substr( $hex, 2, 2 ) . substr( $hex, 0, 2 ),
+            substr( $hex, 10, 2 ) . substr( $hex, 8, 2 ),
+            substr( $hex, 14, 2 ) . substr( $hex, 12, 2 ),
+            substr( $hex, 16, 4 ),
             substr( $hex, 20, 12),
         );
     }

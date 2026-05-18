@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * WebAuthnManager WebAuthn class.
+ *
+ * @package    ArtisanPack_UI
+ * @subpackage SecurityAdvancedAuth
+ *
+ * @author     Jacob Martella <support@artisanpackui.dev>
+ *
+ * @since      1.0.0
+ */
+
 declare( strict_types=1 );
 
 namespace ArtisanPackUI\SecurityAdvancedAuth\Authentication\WebAuthn;
@@ -549,28 +560,28 @@ class WebAuthnManager implements WebAuthnInterface
         // For now, use chunking to avoid loading all into memory at once
         $found = null;
         WebAuthnCredential::chunk( 100, function ( $credentials ) use ( $credentialId, &$found ) {
-            foreach ( $credentials as $credential) {
-                if ( $credential->credential_id === $credentialId) {
+            foreach ( $credentials as $credential ) {
+                if ( $credential->credential_id === $credentialId ) {
                     $found = $credential;
                     return false; // Stop chunking
                 }
             }
-        });
+        } );
         return $found;
     }
 
     /**
      * Base64 URL encode.
      */
-    protected function base64UrlEncode( string $data): string
+    protected function base64UrlEncode( string $data ): string
     {
-        return rtrim( strtr( base64_encode( $data), '+/', '-_'), '=');
+        return rtrim( strtr( base64_encode( $data ), '+/', '-_' ), '=' );
     }
 
     /**
      * Base64 URL decode.
      */
-    protected function base64UrlDecode( string $data): string
+    protected function base64UrlDecode( string $data ): string
     {
         return base64_decode( strtr( $data, '-_', '+/'));
     }

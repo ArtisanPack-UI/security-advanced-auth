@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * UserDevice Eloquent model.
+ *
+ * @package    ArtisanPack_UI
+ * @subpackage SecurityAdvancedAuth
+ *
+ * @author     Jacob Martella <support@artisanpackui.dev>
+ *
+ * @since      1.0.0
+ */
+
 declare( strict_types=1 );
 
 namespace ArtisanPackUI\SecurityAdvancedAuth\Models;

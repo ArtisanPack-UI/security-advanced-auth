@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * DeviceFingerprintService device fingerprinting service.
+ *
+ * @package    ArtisanPack_UI
+ * @subpackage SecurityAdvancedAuth
+ *
+ * @author     Jacob Martella <support@artisanpackui.dev>
+ *
+ * @since      1.0.0
+ */
+
 declare( strict_types=1 );
 
 namespace ArtisanPackUI\SecurityAdvancedAuth\Authentication\Device;
@@ -308,7 +319,7 @@ class DeviceFingerprintService implements DeviceFingerprintInterface
      *
      * @return array<string, mixed>|null
      */
-    protected function getLocationFromRequest( Request $request): ?array
+    protected function getLocationFromRequest( Request $request ): ?array
     {
         // In production, use a GeoIP service
         return [
