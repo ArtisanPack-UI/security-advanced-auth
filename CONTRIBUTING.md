@@ -78,7 +78,7 @@ The template automatically applies these labels:
 
 **You should also add:**
 - `Priority::*` (Critical, High, Medium, or Low) if urgent
-- `Area::*` (Frontend, Backend, etc.) for the affected area
+- `Area::*` (Core, Integration, Infrastructure, Testing) for the affected area
 
 ### Feature Request Template
 
@@ -206,7 +206,7 @@ The template automatically applies:
 
 **You should also add:**
 - `Type::*` (Bug, Feature, Enhancement, etc.)
-- `Area::*` (Frontend, Backend, etc.)
+- `Area::*` (Core, Integration, Infrastructure, Testing)
 
 #### Release Template (Maintainers Only)
 
