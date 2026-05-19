@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * AppleProvider social OAuth provider.
+ *
+ * @package    ArtisanPack_UI
+ * @subpackage SecurityAdvancedAuth
+ *
+ * @author     Jacob Martella <support@artisanpackui.dev>
+ *
+ * @since      1.0.0
+ */
+
 declare( strict_types=1 );
 
 namespace ArtisanPackUI\SecurityAdvancedAuth\Authentication\Social\Providers;
@@ -302,7 +313,7 @@ class AppleProvider extends AbstractOAuth2Provider
             }
 
             return $response->json();
-        });
+        } );
     }
 
     /**
@@ -310,7 +321,7 @@ class AppleProvider extends AbstractOAuth2Provider
      *
      * @param  array<string, mixed>  $data
      */
-    protected function mapUserData( array $data): SocialUser
+    protected function mapUserData( array $data ): SocialUser
     {
         throw new RuntimeException( 'Use getUserFromIdToken() for Apple Sign In');
     }

@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * SsoManager SSO class.
+ *
+ * @package    ArtisanPack_UI
+ * @subpackage SecurityAdvancedAuth
+ *
+ * @author     Jacob Martella <support@artisanpackui.dev>
+ *
+ * @since      1.0.0
+ */
+
 declare( strict_types=1 );
 
 namespace ArtisanPackUI\SecurityAdvancedAuth\Authentication\Sso;
@@ -289,11 +300,11 @@ class SsoManager
             'email_verified_at' => now(), // SSO users are pre-verified
         ];
 
-        $user = $userModel::create( $userData);
+        $user = $userModel::create( $userData );
 
         // Assign default role if configured
-        $defaultRole = config( 'artisanpack.security-advanced-auth.sso.default_role');
-        if ( $defaultRole && method_exists( $user, 'assignRole')) {
+        $defaultRole = config( 'artisanpack.security-advanced-auth.sso.default_role' );
+        if ( $defaultRole && method_exists( $user, 'assignRole' ) ) {
             $user->assignRole( $defaultRole);
         }
 

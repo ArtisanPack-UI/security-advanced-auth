@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * SocialAuthManager social authentication class.
+ *
+ * @package    ArtisanPack_UI
+ * @subpackage SecurityAdvancedAuth
+ *
+ * @author     Jacob Martella <support@artisanpackui.dev>
+ *
+ * @since      1.0.0
+ */
+
 declare( strict_types=1 );
 
 namespace ArtisanPackUI\SecurityAdvancedAuth\Authentication\Social;
@@ -350,12 +361,12 @@ class SocialAuthManager
             'email_verified_at' => $socialUser->isEmailVerified() ? now() : null,
         ];
 
-        $user = $userModel::create( $userData);
+        $user = $userModel::create( $userData );
 
         // Assign default role if configured
-        $defaultRole = config( 'artisanpack.security-advanced-auth.social.default_role');
-        if ( $defaultRole && method_exists( $user, 'assignRole')) {
-            $user->assignRole( $defaultRole);
+        $defaultRole = config( 'artisanpack.security-advanced-auth.social.default_role' );
+        if ( $defaultRole && method_exists( $user, 'assignRole' ) ) {
+            $user->assignRole( $defaultRole );
         }
 
         return $user;

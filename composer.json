@@ -2,8 +2,8 @@
   "name": "artisanpack-ui/security-advanced-auth",
   "description": "Enterprise authentication for Laravel — WebAuthn/FIDO2 passwordless auth, SSO (SAML/OIDC/LDAP), social login, biometric auth, and device fingerprinting.",
   "type": "library",
-  "license": "GPL-3.0-or-later",
-  "version": "0.1.0",
+  "license": "MIT",
+  "version": "1.0.0",
   "keywords": [
     "laravel",
     "security",
@@ -33,7 +33,7 @@
   "authors": [
     {
       "name": "Jacob Martella",
-      "email": "me@jacobmartella.com"
+      "email": "support@artisanpackui.dev"
     }
   ],
   "require": {

@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * DeviceManager Livewire component.
+ *
+ * @package    ArtisanPack_UI
+ * @subpackage SecurityAdvancedAuth
+ *
+ * @author     Jacob Martella <support@artisanpackui.dev>
+ *
+ * @since      1.0.0
+ */
+
 declare( strict_types=1 );
 
 namespace ArtisanPackUI\SecurityAdvancedAuth\Livewire;
@@ -188,8 +199,8 @@ class DeviceManager extends Component
             $device->city,
             $device->region,
             $device->country,
-        ]);
+        ] );
 
-        return implode( ', ', $parts) ?: 'Unknown location';
+        return implode( ', ', $parts ) ?: 'Unknown location';
     }
 }

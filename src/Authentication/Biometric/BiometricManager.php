@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * BiometricManager biometric class.
+ *
+ * @package    ArtisanPack_UI
+ * @subpackage SecurityAdvancedAuth
+ *
+ * @author     Jacob Martella <support@artisanpackui.dev>
+ *
+ * @since      1.0.0
+ */
+
 declare( strict_types=1 );
 
 namespace ArtisanPackUI\SecurityAdvancedAuth\Authentication\Biometric;
@@ -186,7 +197,7 @@ class BiometricManager
 
         // Return first available provider
         foreach ( $this->providers as $name => $provider ) {
-            if ( $provider->isAvailable( $deviceInfo)) {
+            if ( $provider->isAvailable( $deviceInfo ) ) {
                 return $name;
             }
         }

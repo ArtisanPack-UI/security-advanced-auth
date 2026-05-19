@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * WebAuthnCredentialsManager Livewire component.
+ *
+ * @package    ArtisanPack_UI
+ * @subpackage SecurityAdvancedAuth
+ *
+ * @author     Jacob Martella <support@artisanpackui.dev>
+ *
+ * @since      1.0.0
+ */
+
 declare( strict_types=1 );
 
 namespace ArtisanPackUI\SecurityAdvancedAuth\Livewire;
@@ -163,6 +174,6 @@ class WebAuthnCredentialsManager extends Component
 
     public function render()
     {
-        return view( 'security-advanced-auth::livewire.webauthn-credentials-manager');
+        return view( 'security-advanced-auth::livewire.webauthn-credentials-manager' );
     }
 }

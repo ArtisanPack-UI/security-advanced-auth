@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * Security Advanced Auth service provider.
+ *
+ * @package    ArtisanPack_UI
+ * @subpackage SecurityAdvancedAuth
+ *
+ * @author     Jacob Martella <support@artisanpackui.dev>
+ *
+ * @since      1.0.0
+ */
+
 declare( strict_types=1 );
 
 namespace ArtisanPackUI\SecurityAdvancedAuth;
@@ -47,8 +58,19 @@ class SecurityAdvancedAuthServiceProvider extends ServiceProvider
             'security-advanced-auth-config',
         );
 
+        $this->publishes(
+            [
+                __DIR__ . '/../resources/views' => resource_path( 'views/vendor/security-advanced-auth' ),
+            ],
+            'security-advanced-auth-views',
+        );
+
         $this->loadMigrationsFrom( __DIR__ . '/../database/migrations/authentication' );
         $this->loadViewsFrom( __DIR__ . '/../resources/views', 'security-advanced-auth' );
+
+        if ( config( 'artisanpack.security-advanced-auth.routes.enabled', true ) ) {
+            $this->loadRoutesFrom( __DIR__ . '/../routes/auth.php' );
+        }
 
         $this->registerLivewireComponents();
     }

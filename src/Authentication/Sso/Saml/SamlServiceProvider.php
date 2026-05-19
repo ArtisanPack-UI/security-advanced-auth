@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * SamlServiceProvider SAML SSO class.
+ *
+ * @package    ArtisanPack_UI
+ * @subpackage SecurityAdvancedAuth
+ *
+ * @author     Jacob Martella <support@artisanpackui.dev>
+ *
+ * @since      1.0.0
+ */
+
 declare( strict_types=1 );
 
 namespace ArtisanPackUI\SecurityAdvancedAuth\Authentication\Sso\Saml;
@@ -573,10 +584,10 @@ XML;
      *
      * @param  array<string, mixed>  $options
      */
-    protected function buildLogoutRequest( array $options): string
+    protected function buildLogoutRequest( array $options ): string
     {
         $id           = '_' . Str::uuid()->toString();
-        $issueInstant = gmdate( 'Y-m-d\TH:i:s\Z');
+        $issueInstant = gmdate( 'Y-m-d\TH:i:s\Z' );
         $nameId       = $options['name_id'] ?? '';
         $sessionIndex = $options['session_index'] ?? '';
 

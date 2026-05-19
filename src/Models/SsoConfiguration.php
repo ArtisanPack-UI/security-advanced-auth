@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * SsoConfiguration Eloquent model.
+ *
+ * @package    ArtisanPack_UI
+ * @subpackage SecurityAdvancedAuth
+ *
+ * @author     Jacob Martella <support@artisanpackui.dev>
+ *
+ * @since      1.0.0
+ */
+
 declare( strict_types=1 );
 
 namespace ArtisanPackUI\SecurityAdvancedAuth\Models;
@@ -325,8 +336,8 @@ class SsoConfiguration extends Model
         foreach ( $this->sensitiveSettingsKeys as $key ) {
             if ( isset( $settings[ $key ] ) && is_array( $settings[ $key ] ) && ( $settings[ $key ]['__encrypted'] ?? false ) ) {
                 try {
-                    $settings[ $key ] = Crypt::decryptString( $settings[ $key ]['value']);
-                } catch ( Exception) {
+                    $settings[ $key ] = Crypt::decryptString( $settings[ $key ]['value'] );
+                } catch ( Exception ) {
                     $settings[ $key ] = null;
                 }
             }
