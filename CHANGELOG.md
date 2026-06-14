@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-06-14
+
+### Added
+
+- Laravel 13 support — widened `illuminate/support` constraint to `^10.0|^11.0|^12.0|^13.0` so the package installs cleanly on Laravel 13 (and unblocks Laravel 13 adoption for consumers pulling this in via `artisanpack-ui/security-full`). Closes [#15](https://github.com/ArtisanPack-UI/security-advanced-auth/issues/15).
+- CI: new Laravel × Livewire × PHP test matrix covering Laravel 12 and 13 across PHP 8.2–8.4 and Livewire 3.6 / 4.0, with incompatible combinations excluded (L13 requires PHP 8.3+ and Livewire 4).
+- CI: `release/**` branches now trigger the workflow on push and pull request, so release-branch PRs are covered.
+
+### Changed
+
+- Widened `orchestra/testbench` constraint to `^10.2|^11.0` so the dev test environment can resolve a Testbench compatible with Laravel 13.
+- Widened Pest constraints (`pestphp/pest` to `^3.8|^4.0`, `pestphp/pest-plugin-laravel` to `^3.2|^4.0`) so the Laravel 13 install leg can resolve Pest 4 (pest-plugin-laravel v3 caps Laravel at `^12`).
+
+### Fixed
+
+- `SecurityAdvancedAuth::version()` now returns `1.0.1` instead of the stale placeholder `0.1.0`.
+
 ## [1.0.0] - 2026-05-18
 
 ### Added
