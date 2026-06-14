@@ -3,7 +3,7 @@
   "description": "Enterprise authentication for Laravel — WebAuthn/FIDO2 passwordless auth, SSO (SAML/OIDC/LDAP), social login, biometric auth, and device fingerprinting.",
   "type": "library",
   "license": "MIT",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "keywords": [
     "laravel",
     "security",

@@ -99,7 +99,7 @@ The Livewire `WebAuthnCredentialsManager` component handles the UI side. The hos
 ## Requirements
 
 - PHP 8.2+
-- Laravel 10 / 11 / 12
+- Laravel 10 / 11 / 12 / 13
 - `livewire/livewire: ^3.6 | ^4.0` (for the 5 Livewire components)
 - A working `users` table (run Laravel's default migrations first)
 - Per-provider deps (e.g. SAML toolkit if you use SAML SSO — leave to the consumer to install)
