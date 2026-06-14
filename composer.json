@@ -49,8 +49,8 @@
     "laravel/pint": "^1.26",
     "livewire/livewire": "^3.6|^4.0",
     "orchestra/testbench": "^10.2|^11.0",
-    "pestphp/pest": "^3.8",
-    "pestphp/pest-plugin-laravel": "^3.2"
+    "pestphp/pest": "^3.8|^4.0",
+    "pestphp/pest-plugin-laravel": "^3.2|^4.0"
   },
   "scripts": {
     "lint": [
